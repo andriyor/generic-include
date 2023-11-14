@@ -122,9 +122,9 @@ function traverseFromBottomUp(node: TreeItem) {
         for (const child of node.children) {
             traverseFromBottomUp(child);
             if (node.content === undefined) {
-                node.content = fs.readFileSync(node.name, 'utf-8').replace(child.includeLine, child.content);
+                node.content = fs.readFileSync(node.name, 'utf-8').replace(`${child.includeLine}\n`, child.content);
             } else {
-                node.content = node.content.replace(child.includeLine, child.content);
+                node.content = node.content.replace(`${child.includeLine}\n`, child.content);
             }
         }
     }
@@ -150,4 +150,4 @@ export const bundle = (glob: string, outputFile: string) => {
     fs.writeFileSync(outputFile, tree.content, 'utf-8')
 }
 
-bundle('test/project/**', 'result.txt');
+// bundle('test/project/**', 'test/result.txt');
