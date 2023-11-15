@@ -4,7 +4,7 @@ import path from "path";
 import {globSync} from "glob";
 
 type IncludesInfo = {
-    line: string
+    includeLine: string
     relativePath: string
 }
 
@@ -27,9 +27,9 @@ export const cleanupBuildFiles = () => {
 export const getIncludes = (filePath: string) => {
     const allFileContents = fs.readFileSync(filePath, 'utf-8');
     const includes: IncludesInfo[] = [];
-    allFileContents.split(/\r?\n/).forEach(line => {
-        if (line.includes('#include')) {
-            const [include, includePath] = line.split(' ');
+    allFileContents.split(/\r?\n/).forEach(includeLine => {
+        if (includeLine.includes('#include')) {
+            const [includeKey, includePath] = includeLine.split(' ');
             const pathWithoutQuotes = trimQuotes(includePath.trim());
             const relativePath = path.relative(
                 process.cwd(),
@@ -37,7 +37,7 @@ export const getIncludes = (filePath: string) => {
             );
             if (fs.existsSync(relativePath)) {
                 includes.push({
-                    line,
+                    includeLine,
                     relativePath
                 })
             }

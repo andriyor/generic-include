@@ -1,0 +1,61 @@
+[
+  {
+    "filePath": "test/project/package2/main.txt",
+    "includes": [
+      {
+        "includeLine": "#include \"./src/next.txt\"",
+        "relativePath": "test/project/package2/src/next.txt"
+      }
+    ],
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n#include \"./src/next.txt\"\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
+  },
+  {
+    "filePath": "test/project/package2/src/next.txt",
+    "includes": [],
+    "content": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n"
+  },
+  {
+    "filePath": "test/project/package1/next.txt",
+    "includes": [
+      {
+        "includeLine": "#include \"./nested/deep.txt\"",
+        "relativePath": "test/project/package1/nested/deep.txt"
+      },
+      {
+        "includeLine": "#include \"./long.txt\"",
+        "relativePath": "test/project/package1/long.txt"
+      }
+    ],
+    "content": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n#include \"./nested/deep.txt\"\n#include \"./long.txt\"\n"
+  },
+  {
+    "filePath": "test/project/package1/main.txt",
+    "includes": [
+      {
+        "includeLine": "#include \"./next.txt\"",
+        "relativePath": "test/project/package1/next.txt"
+      }
+    ],
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n#include \"./next.txt\"\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n"
+  },
+  {
+    "filePath": "test/project/package1/long.txt",
+    "includes": [],
+    "content": "long\n"
+  },
+  {
+    "filePath": "test/project/package1/nested/some.txt",
+    "includes": [],
+    "content": "lol\n"
+  },
+  {
+    "filePath": "test/project/package1/nested/deep.txt",
+    "includes": [
+      {
+        "includeLine": "#include \"./some.txt\"",
+        "relativePath": "test/project/package1/nested/some.txt"
+      }
+    ],
+    "content": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n#include \"./some.txt\"\n"
+  }
+]
