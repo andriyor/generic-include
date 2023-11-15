@@ -1,9 +1,9 @@
 import path from "path";
+import fs from "fs";
+import util from "util";
+
 import {globSync} from 'glob'
 
-import fs from "fs";
-
-import util from "util";
 
 const trimQuotes = (str: string) => {
     return str.slice(1, -1);
@@ -16,12 +16,12 @@ type TreeItem = {
     children: TreeItem[]
 }
 
-function buildTree(data: Graph) {
+export const buildTree = (data: Graph) => {
     const tree: Record<string, TreeItem> = {};
 
     // Create nodes
-    data.nodes.forEach(node => {
-        tree[node] = { name: node, children: [] };
+    Object.keys(data.nodes).forEach(nodeKey => {
+        tree[nodeKey] = { content: data.nodes[nodeKey].content, name: nodeKey, children: [] };
     });
 
     // Create edges
@@ -29,13 +29,13 @@ function buildTree(data: Graph) {
         const { child, parent, includeLine, content } = edge;
         tree[parent].children.push({
             includeLine: includeLine,
-            content: fs.readFileSync(tree[child].name, 'utf-8'),
+            content: content,
             ...tree[child],
         });
     });
 
     // Find root node(s)
-    const rootNodes = data.nodes.filter(node => {
+    const rootNodes = Object.keys(data.nodes).filter(node => {
         return !data.edges.some(edge => edge.child === node);
     });
 
@@ -58,17 +58,23 @@ type Graph = {
         content: string
         includeLine: string
     }[]
-    nodes: string[]
+    nodes: Record<string, {
+        name: string
+        content: string
+    }>
 }
 
 
 const buildGraph = (res: FileInfo[]) => {
     const graph: Graph = {
         edges: [],
-        nodes: []
+        nodes: {}
     };
     for (const resItem of res) {
-        graph.nodes.push(resItem.filePath)
+        graph.nodes[resItem.filePath] = {
+            name: resItem.filePath,
+            content: resItem.content,
+        }
         for (const resKeyElement of resItem.includes) {
             graph.edges.push({
                 child: resKeyElement.relativePath,
@@ -121,11 +127,7 @@ function traverseFromBottomUp(node: TreeItem) {
     if (node.children.length) {
         for (const child of node.children) {
             traverseFromBottomUp(child);
-            if (node.content === undefined) {
-                node.content = fs.readFileSync(node.name, 'utf-8').replace(`${child.includeLine}\n`, child.content);
-            } else {
-                node.content = node.content.replace(`${child.includeLine}\n`, child.content);
-            }
+            node.content = node.content.replace(`${child.includeLine}\n`, child.content);
         }
     }
 }
@@ -144,9 +146,11 @@ export const bundle = (glob: string, outputFile: string) => {
 
     const graph = buildGraph(res);
     console.log('graph');
+    fs.writeFileSync('./test/graph.snap.json',JSON.stringify(graph, null, 4), 'utf-8')
     console.log(util.inspect(graph, false, null, true))
     const tree = buildTree(graph);
     console.log('tree');
+    fs.writeFileSync('./test/tree.snap.json',JSON.stringify(tree, null, 4), 'utf-8')
     console.log(util.inspect(tree, false, null, true))
     traverseFromBottomUp(tree);
     console.log(util.inspect(tree, false, null, true))
