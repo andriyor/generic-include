@@ -1,0 +1,35 @@
+{
+    "name": "Root",
+    "children": [{
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n#include \"./next.txt\"\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n",
+        "name": "test/project/package1/main.txt",
+        "children": [
+            {
+                "includeLine": "#include \"./next.txt\"",
+                "content": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\n#include \"./nested/deep.txt\"\n#include \"./long.txt\"\n",
+                "name": "test/project/package1/next.txt",
+                "children": [
+                    {
+                        "includeLine": "#include \"./nested/deep.txt\"",
+                        "content": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n#include \"./some.txt\"\n",
+                        "name": "test/project/package1/nested/deep.txt",
+                        "children": [
+                            {
+                                "includeLine": "#include \"./some.txt\"",
+                                "content": "lol\n",
+                                "name": "test/project/package1/nested/some.txt",
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "includeLine": "#include \"./long.txt\"",
+                        "content": "long\n",
+                        "name": "test/project/package1/long.txt",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    }]
+}

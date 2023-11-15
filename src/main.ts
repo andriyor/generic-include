@@ -39,16 +39,11 @@ export const buildTree = (data: Graph) => {
         return !data.edges.some(edge => edge.child === node);
     });
 
-    // Handle multiple root nodes if present
-    if (rootNodes.length === 1) {
-        return tree[rootNodes[0]];
-    } else {
-        const rootNode = { name: 'Root', children: [] };
-        rootNodes.forEach(node => {
-            rootNode.children.push(tree[node]);
-        });
-        return rootNode;
-    }
+    const rootNode = { name: 'Root', children: [] };
+    rootNodes.forEach(node => {
+        rootNode.children.push(tree[node]);
+    });
+    return rootNode;
 }
 
 type Graph = {
@@ -127,7 +122,9 @@ function traverseFromBottomUp(node: TreeItem) {
     if (node.children.length) {
         for (const child of node.children) {
             traverseFromBottomUp(child);
-            node.content = node.content.replace(`${child.includeLine}\n`, child.content);
+            if (node.name !== 'Root') {
+                node.content = node.content.replace(`${child.includeLine}\n`, child.content);
+            }
         }
     }
 }
@@ -146,15 +143,18 @@ export const bundle = (glob: string, outputFile: string) => {
 
     const graph = buildGraph(res);
     console.log('graph');
-    fs.writeFileSync('./test/multiGraph.snap.json',JSON.stringify(graph, null, 4), 'utf-8')
+    fs.writeFileSync('./test/snapshots/multiGraph.snap.json',JSON.stringify(graph, null, 4), 'utf-8')
     console.log(util.inspect(graph, false, null, true))
     const tree = buildTree(graph);
     console.log('tree');
-    fs.writeFileSync('./test/multiTree.snap.json',JSON.stringify(tree, null, 4), 'utf-8')
+    fs.writeFileSync('./test/snapshots/multiTree.snap.json',JSON.stringify(tree, null, 4), 'utf-8')
     console.log(util.inspect(tree, false, null, true))
     traverseFromBottomUp(tree);
     console.log(util.inspect(tree, false, null, true))
-    fs.writeFileSync(outputFile, tree.content, 'utf-8')
+
+    for (const children of tree.children) {
+        fs.writeFileSync(children.name.replace('.', '.build.'), children.content, 'utf-8')
+    }
 }
 
 // bundle('test/project/**', 'test/result.txt');
