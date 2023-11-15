@@ -5,11 +5,20 @@ import {describe, it, expect} from 'vitest'
 import {bundle, buildTree} from '../src/main';
 
 describe('generic-include', () => {
-    it('build-tree', () => {
-        const graph = JSON.parse(fs.readFileSync('./test/graph.snap.json', 'utf-8'));
-        const expectedTree = JSON.parse(fs.readFileSync('./test/tree.snap.json', 'utf-8'));
+    describe('build-tree', () => {
+        it('single root', () => {
+            const graph = JSON.parse(fs.readFileSync('./test/graph.snap.json', 'utf-8'));
+            const expectedTree = JSON.parse(fs.readFileSync('./test/tree.snap.json', 'utf-8'));
 
-        expect(buildTree(graph)).toEqual(expectedTree);
+            expect(buildTree(graph)).toEqual(expectedTree);
+        })
+
+        it('multiple root', () => {
+            const graph = JSON.parse(fs.readFileSync('./test/multiGraph.snap.json', 'utf-8'));
+            const expectedTree = JSON.parse(fs.readFileSync('./test/multiTree.snap.json', 'utf-8'));
+
+            expect(buildTree(graph)).toEqual(expectedTree);
+        })
     });
 
     it('bundle', () => {

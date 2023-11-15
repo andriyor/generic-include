@@ -146,15 +146,15 @@ export const bundle = (glob: string, outputFile: string) => {
 
     const graph = buildGraph(res);
     console.log('graph');
-    fs.writeFileSync('./test/graph.snap.json',JSON.stringify(graph, null, 4), 'utf-8')
+    fs.writeFileSync('./test/multiGraph.snap.json',JSON.stringify(graph, null, 4), 'utf-8')
     console.log(util.inspect(graph, false, null, true))
     const tree = buildTree(graph);
     console.log('tree');
-    fs.writeFileSync('./test/tree.snap.json',JSON.stringify(tree, null, 4), 'utf-8')
+    fs.writeFileSync('./test/multiTree.snap.json',JSON.stringify(tree, null, 4), 'utf-8')
     console.log(util.inspect(tree, false, null, true))
     traverseFromBottomUp(tree);
     console.log(util.inspect(tree, false, null, true))
     fs.writeFileSync(outputFile, tree.content, 'utf-8')
 }
 
-bundle('test/project/**', 'test/result.txt');
+// bundle('test/project/**', 'test/result.txt');
