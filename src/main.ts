@@ -142,7 +142,10 @@ export const bundle = (glob: string, outputFile: string) => {
         })
     }
 
-    const tree = buildTree(buildGraph(res))
+    const graph = buildGraph(res);
+    console.log('graph');
+    console.log(util.inspect(graph, false, null, true))
+    const tree = buildTree(graph);
     console.log('tree');
     console.log(util.inspect(tree, false, null, true))
     traverseFromBottomUp(tree);
@@ -150,4 +153,4 @@ export const bundle = (glob: string, outputFile: string) => {
     fs.writeFileSync(outputFile, tree.content, 'utf-8')
 }
 
-// bundle('test/project/**', 'test/result.txt');
+bundle('test/project/**', 'test/result.txt');
