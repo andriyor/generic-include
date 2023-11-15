@@ -2,7 +2,8 @@ import fs from 'fs';
 
 import {describe, it, expect} from 'vitest'
 
-import {bundle, buildTree, getIncludes} from '../src/main';
+import {bundle, buildTree} from '../src/main';
+import {getIncludes} from "../src/helpers/fileProcessing";
 
 describe('generic-include', () => {
     it('getIncludes', () => {
