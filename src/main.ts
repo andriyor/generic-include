@@ -88,7 +88,7 @@ type IncludesInfo = {
 }
 
 
-const getIncludes = (filePath: string) => {
+export const getIncludes = (filePath: string) => {
     const allFileContents = fs.readFileSync(filePath, 'utf-8');
     const includes: IncludesInfo[] = [];
     allFileContents.split(/\r?\n/).forEach(line => {
@@ -116,8 +116,6 @@ type FileInfo  = {
     includes: IncludesInfo[]
 }
 
-
-
 function traverseFromBottomUp(node: TreeItem) {
     if (node.children.length) {
         for (const child of node.children) {
@@ -129,7 +127,10 @@ function traverseFromBottomUp(node: TreeItem) {
     }
 }
 
-export const bundle = (glob: string, outputFile: string) => {
+export const bundle = (glob: string) => {
+    const buildFiles = globSync('test/project/**/*.build.*');
+    buildFiles.forEach(file => fs.rmSync(file));
+
     const matched = globSync(glob);
     const filesPath = matched.filter(path => !fs.lstatSync(path).isDirectory());
     const res: FileInfo[] = [];
@@ -157,4 +158,4 @@ export const bundle = (glob: string, outputFile: string) => {
     }
 }
 
-// bundle('test/project/**', 'test/result.txt');
+bundle('test/project/**');

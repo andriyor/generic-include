@@ -2,9 +2,22 @@ import fs from 'fs';
 
 import {describe, it, expect} from 'vitest'
 
-import {bundle, buildTree} from '../src/main';
+import {bundle, buildTree, getIncludes} from '../src/main';
 
 describe('generic-include', () => {
+    it('getIncludes', () => {
+        expect(getIncludes('test/project/package1/next.txt')).toEqual([
+            {
+                "line": '#include "./nested/deep.txt"',
+                "relativePath": "test/project/package1/nested/deep.txt",
+            },
+            {
+                "line": '#include "./long.txt"',
+                 "relativePath": "test/project/package1/long.txt",
+            }
+        ]);
+    })
+
     describe('build-tree', () => {
         it('single root', () => {
             const graph = JSON.parse(fs.readFileSync('./test/snapshots/graph.snap.json', 'utf-8'));
@@ -22,7 +35,7 @@ describe('generic-include', () => {
     });
 
     describe('bundle', () => {
-        bundle('test/project/**', 'test/result.txt');
+        bundle('test/project/**');
 
         it('package1', () => {
             const expected = fs.readFileSync('test/snapshots/project/package1/main.build.snap.txt', 'utf-8');
