@@ -2,9 +2,17 @@
 
 Include for any types of files
 
-## Example
+## Install
 
+```shell
+npm i ginclude
+```
+
+## Usage
+
+```shell
 ginclude --files-glob='src/**/*.txt'
+```
 
 `main.txt`
 ```txt

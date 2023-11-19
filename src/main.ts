@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import * as fs from 'node:fs'
 
 import { typeFlag } from 'type-flag'
