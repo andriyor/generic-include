@@ -1,7 +1,16 @@
 import * as fs from 'node:fs'
 
+import { typeFlag } from 'type-flag'
+
 import type { FileInfo } from './helpers/fileProcessing'
 import { cleanupBuildFiles, getFilesWithMetadata } from './helpers/fileProcessing'
+
+const parsed = typeFlag({
+  filesGlob: {
+    type: String,
+    alias: 'f',
+  },
+})
 
 export interface Tree {
   includeLine?: string
@@ -46,8 +55,9 @@ function traverseAndBundleTree(node: Tree) {
   if (node.children.length) {
     for (const child of node.children) {
       traverseAndBundleTree(child)
-      if (node.name !== 'Root')
+      if (node.name !== 'Root') {
         node.content = node.content.replace(`${child.includeLine}\n`, child.content)
+      }
     }
   }
 }
@@ -62,8 +72,9 @@ export function bundle(glob: string) {
 
   traverseAndBundleTree(tree)
 
-  for (const children of tree.children)
+  for (const children of tree.children) {
     fs.writeFileSync(children.name.replace('.', '.build.'), children.content, 'utf-8')
+  }
 
   return {
     filesWithInfo,
@@ -72,6 +83,9 @@ export function bundle(glob: string) {
   }
 }
 
-// const result = bundle('src/**/*.groovy')
-
-// createSnapshot(result)
+if (parsed.flags.filesGlob) {
+  bundle(parsed.flags.filesGlob)
+}
+else {
+  console.log('provide --files-glob option')
+}
