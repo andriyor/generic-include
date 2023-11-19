@@ -10,9 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vitest": "^0.34.6",
+    "@antfu/eslint-config": "^1.2.1",
+    "@tsconfig/recommended": "^1.0.3",
+    "@types/node": "^20.9.2",
+    "eslint": "^8.54.0",
     "typescript": "^5.2.2",
-    "@types/node": "^20.8.4"
+    "vitest": "^0.34.6"
   },
   "dependencies": {
     "glob": "^10.3.10"
