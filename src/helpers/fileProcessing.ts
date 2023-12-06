@@ -19,8 +19,9 @@ function trimQuotes(str: string) {
   return str.slice(1, -1)
 }
 
-export function cleanupBuildFiles() {
-  const buildFiles = globSync('test/project/**/*.build.*')
+export function cleanupBuildFiles(glob: string) {
+  const buildGlob = glob.replace('.', '.build.')
+  const buildFiles = globSync(buildGlob)
   buildFiles.forEach(file => fs.rmSync(file))
 }
 

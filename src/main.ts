@@ -65,7 +65,7 @@ function traverseAndBundleTree(node: Tree) {
 }
 
 export function bundle(glob: string) {
-  cleanupBuildFiles()
+  cleanupBuildFiles(glob)
 
   const filesWithInfo = getFilesWithMetadata(glob)
   const tree = buildTree(filesWithInfo)

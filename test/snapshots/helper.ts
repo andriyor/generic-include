@@ -4,7 +4,7 @@ import * as fs from 'node:fs'
 import type { FileInfo } from '../../src/helpers/fileProcessing'
 import type { Tree } from '../../src/main'
 
-export function createSnapshot(result: { filesWithInfo: FileInfo; processedTree: Tree; unprocessedTree: Tree }) {
+export function createSnapshot(result: { filesWithInfo: FileInfo, processedTree: Tree, unprocessedTree: Tree }) {
   console.log('tree')
   console.log(util.inspect(result.unprocessedTree, false, null, true))
   fs.writeFileSync('./test/snapshots/multiTree.snap.json', JSON.stringify(result.unprocessedTree, null, 2), 'utf-8')
