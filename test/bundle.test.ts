@@ -29,7 +29,7 @@ describe('generic-include', () => {
   })
 
   describe('bundle', () => {
-    bundle('test/project/*.txt')
+    bundle('test/project/**/*.txt')
 
     it('package1', () => {
       const expected = fs.readFileSync('test/snapshots/project/package1/main.build.snap.txt', 'utf-8')
